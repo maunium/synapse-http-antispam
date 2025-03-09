@@ -1,0 +1,31 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "synapse-http-antispam"
+version = "0.1.0"
+description = "A Synapse module that forwards spam checking to an HTTP server"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+authors = [
+    {name = "Tulir Asokan", email = "tulir@maunium.net"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+    "matrix-synapse>=1.125.0",
+]
+
+[project.urls]
+"Repository" = "https://github.com/maunium/synapse-http-antispam"
+"Bug Tracker" = "https://github.com/maunium/synapse-http-antispam/issues"
