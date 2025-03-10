@@ -9,7 +9,7 @@ pip install synapse-http-antispam
 or
 
 ```
-pip install git+https://github.com/maunium/synapse-http-antispam#egg=synapse-http-antispam
+pip install synapse-http-antispam@git+https://github.com/maunium/synapse-http-antispam.git
 ```
 
 ## Configuration
