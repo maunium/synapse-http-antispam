@@ -20,6 +20,7 @@ modules:
   - module: synapse_http_antispam.HTTPAntispam
     config:
       base_url: http://localhost:8080
+      authorization: random string
       enabled_callbacks:
         - user_may_invite
 ```
@@ -30,6 +31,7 @@ See <https://element-hq.github.io/synapse/v1.126/modules/spam_checker_callbacks.
 for the list of available callbacks. All callbacks except `check_media_file_for_spam` are available.
 
 The module will make HTTP requests to `<base_url>/<callback_name>` with all function parameters as JSON fields.
+The `authorization` field will be sent as a `Authorization: Bearer <value>` header if specified.
 
 Any 2xx response will be return `NOT_SPAM` to Synapse and the response body will be ignored.
 

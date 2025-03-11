@@ -16,10 +16,15 @@ logger = logging.getLogger(__name__)
 class HTTPAntispam:
     _http_client: SimpleHttpClient
     _url: str
+    _headers: dict[str, str]
 
     def __init__(self, config: dict, api: ModuleApi) -> None:
         self._http_client = api.http_client
         self._url = config["base_url"]
+        self._headers = {}
+        auth = config.get("authorization")
+        if auth:
+            self._headers["Authorization"] = f"Bearer {auth}"
         callbacks = {}
         all_callbacks = [x for x in dir(self) if not x.startswith("_")]
         enabled_callbacks = config.get("enabled_callbacks", all_callbacks)
@@ -30,7 +35,7 @@ class HTTPAntispam:
     async def _do_request(self, path: str, data: dict):
         url = f"{self._url}/{path}"
         try:
-            await self._http_client.post_json_get_json(url, data)
+            await self._http_client.post_json_get_json(url, data, self._headers)
             return NOT_SPAM
         except HttpResponseException as e:
             try:
