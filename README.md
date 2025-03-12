@@ -28,7 +28,8 @@ modules:
 If `enabled_callbacks` is not specified, all callbacks will be enabled.
 
 See <https://element-hq.github.io/synapse/v1.126/modules/spam_checker_callbacks.html>
-for the list of available callbacks. All callbacks except `check_media_file_for_spam` are available.
+for the list of available callbacks. All callbacks except `check_media_file_for_spam`,
+`check_registration_for_spam` and `should_drop_federated_event` are available.
 
 The module will make HTTP requests to `<base_url>/<callback_name>` with all function parameters as JSON fields.
 The `authorization` field will be sent as a `Authorization: Bearer <value>` header if specified.
