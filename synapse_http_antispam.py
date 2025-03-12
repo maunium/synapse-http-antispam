@@ -124,23 +124,6 @@ class HTTPAntispam:
             },
         )
 
-    async def check_registration_for_spam(
-        self,
-        email_threepid: dict | None,
-        username: str | None,
-        request_info: list[tuple[str, str]],
-        auth_provider_id: str | None = None,
-    ):
-        return await self._do_request(
-            "check_registration_for_spam",
-            {
-                "email_threepid": email_threepid,
-                "username": username,
-                "request_info": request_info,
-                "auth_provider_id": auth_provider_id,
-            },
-        )
-
     async def check_login_for_spam(
         self,
         user_id: str,
@@ -165,13 +148,5 @@ class HTTPAntispam:
         event_dict["event_id"] = event.event_id
         return await self._do_request(
             "check_event_for_spam",
-            {"event": event_dict},
-        )
-
-    async def should_drop_federated_event(self, event: EventBase):
-        event_dict = format_event_for_client_v2(event.get_dict())
-        event_dict["event_id"] = event.event_id
-        return await self._do_request(
-            "should_drop_federated_event",
             {"event": event_dict},
         )
