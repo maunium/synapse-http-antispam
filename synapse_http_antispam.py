@@ -62,23 +62,23 @@ class HTTPAntispam:
             )
             return Codes.UNKNOWN, {"error": "Failed to connect to antispam server"}
 
-    async def user_may_join_room(self, user_id: str, room_id: str, is_invited: bool):
+    async def user_may_join_room(self, user: str, room: str, is_invited: bool):
         return await self._do_request(
             "user_may_join_room",
             {
-                "user_id": user_id,
-                "room_id": room_id,
+                "user": user,
+                "room": room,
                 "is_invited": is_invited,
             },
         )
 
-    async def user_may_invite(self, user_id: str, room_id: str, inviter_user_id: str):
+    async def user_may_invite(self, inviter: str, invitee: str, room_id: str):
         return await self._do_request(
             "user_may_invite",
             {
-                "user_id": user_id,
+                "inviter": inviter,
+                "invitee": invitee,
                 "room_id": room_id,
-                "inviter_user_id": inviter_user_id,
             },
         )
 
@@ -127,9 +127,9 @@ class HTTPAntispam:
     async def check_login_for_spam(
         self,
         user_id: str,
-        device_id: str,
-        initial_display_name: str,
-        request_info: list[tuple[str, str]],
+        device_id: str | None,
+        initial_display_name: str | None,
+        request_info: list[tuple[str | None, str]],
         auth_provider_id: str | None = None,
     ):
         return await self._do_request(
