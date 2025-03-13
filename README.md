@@ -1,6 +1,10 @@
 # synapse-http-antispam
 A Synapse spam checker module that forwards requests to an HTTP server.
 
+## Discussion
+This project was written for use with Meowlnir, so it can be discussed in the
+Meowlnir room: [#meowlnir:maunium.net](https://matrix.to/#/#meowlnir:maunium.net)
+
 ## Installation
 ```
 pip install synapse-http-antispam
