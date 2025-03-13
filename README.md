@@ -31,13 +31,15 @@ See <https://element-hq.github.io/synapse/v1.126/modules/spam_checker_callbacks.
 for the list of available callbacks. All callbacks except `check_media_file_for_spam`,
 `check_registration_for_spam` and `should_drop_federated_event` are available.
 
-The module will make HTTP requests to `<base_url>/<callback_name>` with all function parameters as JSON fields.
-The `authorization` field will be sent as a `Authorization: Bearer <value>` header if specified.
+The module will make HTTP requests to `<base_url>/<callback_name>` with all
+function parameters as JSON fields. The `authorization` field will be sent as
+a `Authorization: Bearer <value>` header if specified.
 
-Any 2xx response will be return `NOT_SPAM` to Synapse and the response body will be ignored.
+The response body must always be JSON. Any 2xx response will be return
+`NOT_SPAM` to Synapse. The content of 2xx responses is ignored, so an empty
+object is sufficient. Any other response is treated as a rejection and the
+response body will be returned to the client as-is. If the `errcode` field is
+not present in error responses, it will default to `M_FORBIDDEN`.
 
-Any other response is treated as a rejection. The response body must be JSON and will be returned to the client as is.
-If the `errcode` field is not present, it will default to `M_FORBIDDEN`.
-
-If the server returns a non-JSON response or if the request fails, the module will fail closed and reject the callback
-with an `M_UNKNOWN` error.
+If the server returns a non-JSON response or if the request fails, the module
+will fail closed and reject the callback with an `M_UNKNOWN` error.
