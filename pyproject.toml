@@ -29,3 +29,4 @@ dependencies = [
 [project.urls]
 "Repository" = "https://github.com/maunium/synapse-http-antispam"
 "Bug Tracker" = "https://github.com/maunium/synapse-http-antispam/issues"
+"Changelog" = "https://github.com/maunium/synapse-http-antispam/blob/main/CHANGELOG.md"
