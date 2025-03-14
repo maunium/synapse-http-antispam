@@ -27,6 +27,8 @@ modules:
       authorization: random string
       enabled_callbacks:
         - user_may_invite
+      fail_open:
+        check_event_for_spam: true
 ```
 
 If `enabled_callbacks` is not specified, all callbacks will be enabled.
@@ -46,4 +48,6 @@ response body will be returned to the client as-is. If the `errcode` field is
 not present in error responses, it will default to `M_FORBIDDEN`.
 
 If the server returns a non-JSON response or if the request fails, the module
-will fail closed and reject the callback with an `M_UNKNOWN` error.
+will fail closed and reject the callback with an `M_UNKNOWN` error by default,
+except for callbacks specified in `fail_open`. Additionally, the `check_event_for_spam`
+callback will fail open by default, unless set to `false` in `fail_open`.

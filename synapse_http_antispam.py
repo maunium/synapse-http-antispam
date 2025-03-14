@@ -17,6 +17,7 @@ class HTTPAntispam:
     _http_client: SimpleHttpClient
     _url: str
     _headers: dict[str, list[str]]
+    _fail_open: dict[str, bool]
 
     def __init__(self, config: dict, api: ModuleApi) -> None:
         self._http_client = api.http_client
@@ -30,6 +31,13 @@ class HTTPAntispam:
         enabled_callbacks = config.get("enabled_callbacks", all_callbacks)
         for callback in enabled_callbacks:
             callbacks[callback] = getattr(self, callback)
+        self._fail_open = {
+            # Soft failing all federated events would be a bad idea, so we fail open by default.
+            # TODO it might be nice to allow federated events while failing local ones,
+            #      so the error would be easier to notice.
+            "check_event_for_spam": True,
+            **config.get("fail_open", {}),
+        }
         api.register_spam_checker_callbacks(**callbacks)
 
     async def _do_request(self, path: str, data: dict):
@@ -47,6 +55,8 @@ class HTTPAntispam:
                     url,
                     data,
                 )
+                if self._fail_open.get(path, False):
+                    return NOT_SPAM
                 return Codes.UNKNOWN, {
                     "error": "Unexpected response from antispam server"
                 }
@@ -60,6 +70,8 @@ class HTTPAntispam:
             logger.exception(
                 "Failed to connect to antispam server (POST %s %s)", url, data
             )
+            if self._fail_open.get(path, False):
+                return NOT_SPAM
             return Codes.UNKNOWN, {"error": "Failed to connect to antispam server"}
 
     async def user_may_join_room(self, user: str, room: str, is_invited: bool):
