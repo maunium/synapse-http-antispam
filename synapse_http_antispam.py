@@ -1,14 +1,9 @@
-from synapse.module_api import (
-    ModuleApi,
-    NOT_SPAM,
-    SimpleHttpClient,
-    UserProfile,
-    EventBase,
-)
-from synapse.api.errors import Codes, HttpResponseException
-from synapse.events.utils import format_event_for_client_v2
 import json
 import logging
+
+from synapse.api.errors import Codes, HttpResponseException
+from synapse.events.utils import format_event_for_client_v2
+from synapse.module_api import NOT_SPAM, EventBase, ModuleApi, SimpleHttpClient, UserProfile
 
 logger = logging.getLogger(__name__)
 
@@ -57,9 +52,7 @@ class HTTPAntispam:
                 )
                 if self._fail_open.get(path, False):
                     return NOT_SPAM
-                return Codes.UNKNOWN, {
-                    "error": "Unexpected response from antispam server"
-                }
+                return Codes.UNKNOWN, {"error": "Unexpected response from antispam server"}
             try:
                 errcode = Codes(data["errcode"])
                 data.pop("errcode")
@@ -67,9 +60,7 @@ class HTTPAntispam:
             except (KeyError, ValueError):
                 return Codes.FORBIDDEN, data
         except Exception:
-            logger.exception(
-                "Failed to connect to antispam server (POST %s %s)", url, data
-            )
+            logger.exception("Failed to connect to antispam server (POST %s %s)", url, data)
             if self._fail_open.get(path, False):
                 return NOT_SPAM
             return Codes.UNKNOWN, {"error": "Failed to connect to antispam server"}
@@ -125,9 +116,7 @@ class HTTPAntispam:
             {"user_id": user_id, "room_id": room_id},
         )
 
-    async def check_username_for_spam(
-        self, user_profile: UserProfile, requester_id: str
-    ):
+    async def check_username_for_spam(self, user_profile: UserProfile, requester_id: str):
         return await self._do_request(
             "check_username_for_spam",
             {
