@@ -4,6 +4,7 @@ import logging
 from synapse.api.errors import Codes, HttpResponseException
 from synapse.events.utils import format_event_for_client_v2
 from synapse.module_api import NOT_SPAM, EventBase, ModuleApi, SimpleHttpClient, UserProfile
+from twisted.internet import defer
 
 logger = logging.getLogger(__name__)
 
@@ -13,6 +14,7 @@ class HTTPAntispam:
     _url: str
     _headers: dict[str, list[str]]
     _fail_open: dict[str, bool]
+    _async: dict[str, bool]
 
     def __init__(self, config: dict, api: ModuleApi) -> None:
         self._http_client = api.http_client
@@ -33,12 +35,25 @@ class HTTPAntispam:
             "check_event_for_spam": True,
             **config.get("fail_open", {}),
         }
+        self._async = {
+            **config.get("async", {}),
+        }
         api.register_spam_checker_callbacks(**callbacks)
+
+    async def _catch_errors(self, task: defer.Deferred, url: str):
+        try:
+            await task
+        except Exception:
+            logger.exception("Error in async callback (POST %s)", url)
 
     async def _do_request(self, path: str, data: dict):
         url = f"{self._url}/{path}"
         try:
-            await self._http_client.post_json_get_json(url, data, self._headers)
+            task = self._http_client.post_json_get_json(url, data, self._headers)
+            if self._async.get(path, False):
+                defer.ensureDeferred(self._catch_errors(task, url))
+            else:
+                await task
             return NOT_SPAM
         except HttpResponseException as e:
             try:

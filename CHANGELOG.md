@@ -1,7 +1,8 @@
-# unreleased
+# v0.3.0 (unreleased)
 
-* Made HTTP failure behavior configurable and changed `check_event_for_spam` to
-  default to fail-open.
+* Added option to run callback requests asynchronously without blocking.
+* Made HTTP failure behavior configurable for synchronous callbacks and changed
+  `check_event_for_spam` to default to fail-open.
 
 # v0.2.0 (2025-03-13)
 
