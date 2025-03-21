@@ -1,4 +1,4 @@
-# v0.3.0 (unreleased)
+# v0.3.0 (2023-03-21)
 
 * Added option to run callback requests asynchronously without blocking.
 * Made HTTP failure behavior configurable for synchronous callbacks and changed
