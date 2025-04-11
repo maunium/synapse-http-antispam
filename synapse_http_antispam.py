@@ -90,6 +90,15 @@ class HTTPAntispam:
             },
         )
 
+    async def accept_make_join(self, user: str, room: str):
+        return await self._do_request(
+            "accept_make_join",
+            {
+                "user": user,
+                "room": room,
+            },
+        )
+
     async def user_may_invite(self, inviter: str, invitee: str, room_id: str):
         return await self._do_request(
             "user_may_invite",
