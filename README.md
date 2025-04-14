@@ -17,7 +17,16 @@ pip install synapse-http-antispam@git+https://github.com/maunium/synapse-http-an
 ```
 
 ## Configuration
-Add the following to your `homeserver.yaml`:
+The exact callbacks to enable depend on what you want to do with antispam.
+For example, if you want to block invites using [Meowlnir] or [Draupnir],
+refer to their docs on how to configure the module.
+
+If you just want to find out all available options, continue reading here.
+
+[Meowlnir]: https://github.com/maunium/meowlnir#blocking-invites
+[Draupnir]: https://the-draupnir-project.github.io/draupnir-documentation/bot/synapse-http-antispam
+
+Reference for the module configuration in `homeserver.yaml`:
 
 ```yaml
 modules:
