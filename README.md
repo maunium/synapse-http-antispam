@@ -6,6 +6,8 @@ This project was written for use with Meowlnir, so it can be discussed in the
 Meowlnir room: [#meowlnir:maunium.net](https://matrix.to/#/#meowlnir:maunium.net)
 
 ## Installation
+In the Python environment where Synapse is installed:
+
 ```
 pip install synapse-http-antispam
 ```
@@ -16,12 +18,14 @@ or
 pip install synapse-http-antispam@git+https://github.com/maunium/synapse-http-antispam.git
 ```
 
-## Configuration
+## Configuration reference
 The exact callbacks to enable depend on what you want to do with antispam.
-For example, if you want to block invites using [Meowlnir] or [Draupnir],
-refer to their docs on how to configure the module.
+Most users should not read these docs and should instead refer to the docs
+of whatever antispam server they have. For example, if you want to block
+invites, refer to the [Meowlnir] or [Draupnir] docs.
 
-If you just want to find out all available options, continue reading here.
+If you want to write your own antispam server or just want to find out all
+available options, continue reading here.
 
 [Meowlnir]: https://github.com/maunium/meowlnir#blocking-invites
 [Draupnir]: https://the-draupnir-project.github.io/draupnir-documentation/bot/synapse-http-antispam
