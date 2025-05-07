@@ -1,7 +1,8 @@
-# v0.3.1 (unreleased)
+# v0.4.0 (unreleased)
 
 * Improved installation and configuration instructions.
 * Added support for `accept_make_join` callback for custom restricted join rules.
+* Added support for loading the auth token from a file.
 
 # v0.3.0 (2025-03-21)
 

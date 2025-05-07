@@ -20,9 +20,11 @@ class HTTPAntispam:
         self._http_client = api.http_client
         self._url = config["base_url"]
         self._headers = {}
-        auth = config.get("authorization")
-        if auth:
+        if auth := config.get("authorization"):
             self._headers["Authorization"] = [f"Bearer {auth}"]
+        elif auth_file := config.get("authorization_path"):
+            with open(auth_file) as f:
+                self._headers["Authorization"] = [f"Bearer {f.read().strip()}"]
         callbacks = {}
         all_callbacks = [x for x in dir(self) if not x.startswith("_")]
         enabled_callbacks = config.get("enabled_callbacks", all_callbacks)
