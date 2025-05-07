@@ -12,11 +12,34 @@ In the Python environment where Synapse is installed:
 pip install synapse-http-antispam
 ```
 
-or
+or if you want the main branch instead of the last release:
 
 ```
 pip install synapse-http-antispam@git+https://github.com/maunium/synapse-http-antispam.git
 ```
+
+### Installation with Synapse Debian packages
+The upstream Debian packages for Synapse create a virtualenv in
+`/opt/matrix-synapse`. You must install the module inside that virtualenv,
+not globally on the system.
+
+### Installation inside Docker
+You can make your own overlay image to install the module:
+
+```Dockerfile
+FROM matrixdotorg/synapse
+
+RUN pip install synapse-http-antispam
+```
+
+Alternatively, you can create a bind mount at runtime, e.g.
+
+```
+docker run -v /path/to/synapse_http_antispam.py:/usr/local/lib/python3.12/site-packages/synapse_http_antispam.py:ro ...
+```
+
+(you need to acquire `synapse_http_antispam.py` yourself and may need to adjust
+the python version in the path)
 
 ## Configuration reference
 The exact callbacks to enable depend on what you want to do with antispam.
