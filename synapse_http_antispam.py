@@ -21,6 +21,10 @@ class HTTPAntispam:
         self._url = config["base_url"]
         self._headers = {}
         auth = config.get("authorization")
+        auth_path = config.get("authorization_path")
+        if (not auth) and auth_path:
+            with open(auth_path, "r") as f:
+                auth = f.read().strip()
         if auth:
             self._headers["Authorization"] = [f"Bearer {auth}"]
         callbacks = {}
