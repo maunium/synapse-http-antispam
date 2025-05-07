@@ -1,4 +1,9 @@
-# v0.3.0 (2023-03-21)
+# v0.3.1 (unreleased)
+
+* Improved installation and configuration instructions.
+* Added support for `accept_make_join` callback for custom restricted join rules.
+
+# v0.3.0 (2025-03-21)
 
 * Added option to run callback requests asynchronously without blocking.
 * Made HTTP failure behavior configurable for synchronous callbacks and changed
