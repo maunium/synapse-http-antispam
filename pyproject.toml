@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "synapse-http-antispam"
-version = "0.3.0"
+version = "0.4.0"
 description = "A Synapse module that forwards spam checking to an HTTP server"
 readme = "README.md"
 license = "MIT"

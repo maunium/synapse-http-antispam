@@ -1,4 +1,4 @@
-# v0.4.0 (unreleased)
+# v0.4.0 (2025-05-16)
 
 * Improved installation and configuration instructions.
 * Added support for `accept_make_join` callback for custom restricted join rules.
