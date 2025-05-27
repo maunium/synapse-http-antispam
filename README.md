@@ -61,6 +61,7 @@ modules:
     config:
       base_url: http://localhost:8080
       authorization: random string
+      do_ping: true
       enabled_callbacks:
         - user_may_invite
       async:
@@ -93,3 +94,6 @@ callback will fail open by default, unless set to `false` in `fail_open`.
 Any callbacks set to `true` in the `async` map will be executed in the background
 and will always return `NOT_SPAM` to Synapse. The response status and data will
 be ignored for async callbacks.
+
+if `do_ping` is set to `true`, the module will call the `ping` callback with an
+`id` field, expecting a response with the same ID and `"status": "ok"`.

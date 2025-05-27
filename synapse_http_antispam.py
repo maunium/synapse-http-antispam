@@ -1,5 +1,7 @@
 import json
 import logging
+import random
+import string
 
 from synapse.api.errors import Codes, HttpResponseException
 from synapse.events.utils import format_event_for_client_v2
@@ -41,6 +43,30 @@ class HTTPAntispam:
             **config.get("async", {}),
         }
         api.register_spam_checker_callbacks(**callbacks)
+        if config.get("do_ping"):
+            defer.ensureDeferred(self._do_ping(api))
+
+    async def _do_ping(self, api: ModuleApi):
+        url = f"{self._url}/ping"
+        while True:
+            try:
+                req_id = "".join(random.choices(string.ascii_letters, k=8))
+                resp = await self._http_client.post_json_get_json(
+                    url, {"id": req_id}, self._headers
+                )
+                if resp.get("id") != req_id or resp.get("status") != "ok":
+                    logger.error(
+                        "Unexpected ping response from antispam server (POST %s with ID %s): %s",
+                        url,
+                        req_id,
+                        resp,
+                    )
+                else:
+                    logger.info("Successfully pinged antispam server with request ID %s", req_id)
+                    return
+            except Exception:
+                logger.exception("Failed to ping antispam server (POST %s)", url)
+            await api.sleep(5)
 
     async def _catch_errors(self, task: defer.Deferred, url: str):
         try:
