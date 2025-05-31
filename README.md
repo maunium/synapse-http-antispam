@@ -50,7 +50,7 @@ invites, refer to the [Meowlnir] or [Draupnir] docs.
 If you want to write your own antispam server or just want to find out all
 available options, continue reading here.
 
-[Meowlnir]: https://github.com/maunium/meowlnir#blocking-invites
+[Meowlnir]: https://docs.mau.fi/meowlnir/invite-blocking.html
 [Draupnir]: https://the-draupnir-project.github.io/draupnir-documentation/bot/synapse-http-antispam
 
 Reference for the module configuration in `homeserver.yaml`:
