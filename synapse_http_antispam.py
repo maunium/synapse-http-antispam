@@ -203,3 +203,11 @@ class HTTPAntispam:
             "check_event_for_spam",
             {"event": event_dict},
         )
+
+    async def federated_user_may_invite(self, event: EventBase):
+        event_dict = format_event_for_client_v2(event.get_dict())
+        event_dict["event_id"] = event.event_id
+        return await self._do_request(
+            "federated_user_may_invite",
+            {"event": event_dict},
+        )
