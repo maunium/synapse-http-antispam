@@ -1,3 +1,10 @@
+# v0.5.0 (2025-06-27)
+
+* Added support for `federated_user_may_invite` callback introduced in Synapse
+  1.134.0.
+* Added option to ping antispam server on startup to make it easier to find
+  error logs.
+
 # v0.4.0 (2025-05-16)
 
 * Improved installation and configuration instructions.
