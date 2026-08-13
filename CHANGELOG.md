@@ -1,3 +1,7 @@
+# v0.5.1 (2026-08-13)
+
+* Fixed async callbacks, which Synapse broke in v1.140.
+
 # v0.5.0 (2025-06-27)
 
 * Added support for `federated_user_may_invite` callback introduced in Synapse
