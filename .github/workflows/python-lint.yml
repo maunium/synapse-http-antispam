@@ -6,17 +6,17 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-python@v5
+    - uses: actions/checkout@v7
+    - uses: actions/setup-python@v7
       with:
-        python-version: "3.13"
+        python-version: "3.14"
     - uses: isort/isort-action@master
       with:
         sortPaths: "./synapse_http_antispam.py"
     - uses: psf/black@stable
       with:
         src: "./synapse_http_antispam.py"
-        version: "25.1.0"
+        version: "26.5.1"
     - name: pre-commit
       run: |
         pip install pre-commit
