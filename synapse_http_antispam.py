@@ -6,7 +6,6 @@ import string
 from synapse.api.errors import Codes, HttpResponseException
 from synapse.events.utils import format_event_for_client_v2
 from synapse.module_api import NOT_SPAM, EventBase, ModuleApi, SimpleHttpClient, UserProfile
-from twisted.internet import defer
 
 logger = logging.getLogger(__name__)
 
@@ -46,9 +45,9 @@ class HTTPAntispam:
         }
         api.register_spam_checker_callbacks(**callbacks)
         if config.get("do_ping"):
-            defer.ensureDeferred(self._do_ping(api))
+            api.run_as_background_process("synapse_http_antispam_ping", self._do_ping)
 
-    async def _do_ping(self, api: ModuleApi):
+    async def _do_ping(self):
         url = f"{self._url}/ping"
         while True:
             try:
@@ -68,7 +67,7 @@ class HTTPAntispam:
                     return
             except Exception:
                 logger.exception("Failed to ping antispam server (POST %s)", url)
-            await api.sleep(5)
+            await self._api.sleep(5)
 
     async def _run_async_request(self, url: str, data: dict):
         try:
