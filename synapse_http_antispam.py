@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class HTTPAntispam:
+    _api: ModuleApi
     _http_client: SimpleHttpClient
     _url: str
     _headers: dict[str, list[str]]
@@ -19,6 +20,7 @@ class HTTPAntispam:
     _async: dict[str, bool]
 
     def __init__(self, config: dict, api: ModuleApi) -> None:
+        self._api = api
         self._http_client = api.http_client
         self._url = config["base_url"]
         self._headers = {}
@@ -68,20 +70,24 @@ class HTTPAntispam:
                 logger.exception("Failed to ping antispam server (POST %s)", url)
             await api.sleep(5)
 
-    async def _catch_errors(self, task: defer.Deferred, url: str):
+    async def _run_async_request(self, url: str, data: dict):
         try:
-            await task
+            await self._http_client.post_json_get_json(url, data, self._headers)
         except Exception:
             logger.exception("Error in async callback (POST %s)", url)
 
     async def _do_request(self, path: str, data: dict):
         url = f"{self._url}/{path}"
         try:
-            task = self._http_client.post_json_get_json(url, data, self._headers)
             if self._async.get(path, False):
-                defer.ensureDeferred(self._catch_errors(task, url))
+                self._api.run_as_background_process(
+                    "synapse_http_antispam_async_callback",
+                    self._run_async_request,
+                    url,
+                    data,
+                )
             else:
-                await task
+                await self._http_client.post_json_get_json(url, data, self._headers)
             return NOT_SPAM
         except HttpResponseException as e:
             try:
